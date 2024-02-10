@@ -142,12 +142,11 @@ impl FuturesAccount {
         qty: impl Into<f64>,
         price: f64,
         time_in_force: TimeInForce,
-        position_side: PositionSide,
     ) -> Result<Transaction> {
         let order = OrderRequest {
             symbol: symbol.into(),
             side: OrderSide::Sell,
-            position_side: Some(position_side),
+            position_side: None,
             order_type: OrderType::Limit,
             time_in_force: Some(time_in_force),
             quantity: Some(qty.into()),
@@ -191,7 +190,7 @@ impl FuturesAccount {
     }
 
     /// Place a Market sell order
-    pub async fn market_sell<S, F>(&self, symbol: S, qty: F, position_side: PositionSide) -> Result<Transaction>
+    pub async fn market_sell<S, F>(&self, symbol: S, qty: F) -> Result<Transaction>
     where
         S: Into<String>,
         F: Into<f64>,
@@ -199,7 +198,7 @@ impl FuturesAccount {
         let order: OrderRequest = OrderRequest {
             symbol: symbol.into(),
             side: OrderSide::Sell,
-            position_side: Some(position_side),
+            position_side: None,
             order_type: OrderType::Market,
             time_in_force: None,
             quantity: Some(qty.into()),
